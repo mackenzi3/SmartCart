@@ -167,6 +167,7 @@ export default function App() {
           .h-dynamic {
             height: 100vh;
             height: 100dvh;
+            overscroll-behavior: none;
           }
           @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -260,7 +261,7 @@ export default function App() {
             </div>
 
             {/* Scrollable Grid */}
-            <div className="flex-1 overflow-y-auto p-5 scroll-smooth scrollbar-hide">
+            <div className="flex-1 overflow-y-auto p-5 scroll-smooth scrollbar-hide overscroll-none">
               <div className="grid grid-cols-2 gap-4 pb-24">
                 {/* Promo 1 */}
                 <div className="h-40 rounded-2xl relative overflow-hidden transition-transform hover:-translate-y-1">
@@ -403,7 +404,7 @@ export default function App() {
         ) : (
           /* Normal Landing Page Content */
           <>
-            <main className="flex-1 overflow-y-auto p-4 space-y-6 pb-24 scrollbar-hide animate-scanIn">
+            <main className="flex-1 overflow-y-auto p-4 space-y-6 pb-24 scrollbar-hide animate-scanIn overscroll-none">
               
               {/* Scanner Section - Frameless & Optimized */}
               <section className="space-y-2">
