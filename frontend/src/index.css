@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-zinc-950 text-slate-100 antialiased;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-zinc-900/70 backdrop-blur-xl border border-zinc-800/50 rounded-2xl shadow-xl;
+  }
+  
+  .glass-nav {
+    @apply bg-zinc-950/90 backdrop-blur-xl border-t border-zinc-800/50;
+  }
+}
+
+/* Custom scrollbar for horizontal scroll */
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+    height: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 2px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+}

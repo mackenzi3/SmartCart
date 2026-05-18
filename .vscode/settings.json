@@ -1,0 +1,8 @@
+{
+    "mdb.presetConnections": [
+        {
+            "name": "Atlas Connection",
+            "connectionString": "mongodb+srv://mackenzieloody:ImissHappyBapu64@kclash.ylkql2g.mongodb.net/smartcart?retryWrites=true&w=majority"
+        }
+    ]
+}
