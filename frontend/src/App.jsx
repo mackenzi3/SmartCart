@@ -84,6 +84,7 @@ export default function App() {
   // USER SYSTEM (V2 Request): State for loyalty customer data
   // Next dev: Connect this to actual auth/device ID in production
   const [userData, setUserData] = useState({ name: 'Loading...', loyaltyPoints: 0 });
+  const [isScanning, setIsScanning] = useState(false);
 
   // Fetch user data on load
   useEffect(() => {
@@ -142,7 +143,8 @@ export default function App() {
   }, [items.length]);
 
   // Camera access
-  useEffect(() => {
+  const startCamera = () => {
+    setIsScanning(true);
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
         .then(stream => {
@@ -154,7 +156,7 @@ export default function App() {
           console.log("Camera access denied or not available. Using simulated feed.");
         });
     }
-  }, []);
+  };
 
   const removeItem = (id) => {
     setItems(items.filter(item => item.id !== id));
@@ -411,8 +413,8 @@ export default function App() {
                 <div className="flex justify-between items-center px-1">
                   <span className="text-xs font-bold tracking-widest text-slate-500 uppercase">Intelligent Scanner</span>
                   <div className="flex items-center gap-1.5">
-                    <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
-                    <span className="text-xs text-emerald-500 font-semibold">Active</span>
+                    <div className={`w-1.5 h-1.5 ${isScanning ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'} rounded-full`}></div>
+                    <span className="text-xs ${isScanning ? 'text-emerald-500' : 'text-red-500'} font-semibold">{isScanning ? 'Active' : 'Inactive'}</span>
                   </div>
                 </div>
                 <div className={`relative w-full h-52 bg-zinc-800/50 rounded-3xl overflow-hidden transition-all duration-300 ${scanPulse ? 'ring-2 ring-[#E5B4B2] shadow-[#E5B4B2]/20' : ''}`}>
@@ -420,16 +422,21 @@ export default function App() {
                     ref={videoRef} 
                     autoPlay 
                     playsInline 
-                    className={`w-full h-full object-cover opacity-40 ${isLowPower ? 'blur-sm' : ''}`}
+                    className={`w-full h-full object-cover ${isScanning ? 'opacity-40' : 'opacity-0'} ${isLowPower ? 'blur-sm' : ''} transition-opacity duration-500`}
                   ></video>
                   
                   {/* Aesthetic Start Scan Button */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <button className="bg-gradient-to-r from-[#E5B4B2] to-[#B76E79] text-white font-extrabold px-6 py-3 rounded-full shadow-lg shadow-[#E5B4B2]/30 hover:scale-105 transition-transform flex items-center gap-2 text-xs uppercase tracking-wider">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-                      Start Scan
-                    </button>
-                  </div>
+                  {!isScanning && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-zinc-900/80 backdrop-blur-sm">
+                      <button 
+                        onClick={startCamera}
+                        className="bg-gradient-to-r from-[#E5B4B2] to-[#B76E79] text-white font-extrabold px-6 py-3 rounded-full shadow-lg shadow-[#E5B4B2]/30 hover:scale-105 transition-transform flex items-center gap-2 text-xs uppercase tracking-wider"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                        Start Scan
+                      </button>
+                    </div>
+                  )}
                   
                   {/* Scanner Overlay */}
                   <div className="absolute inset-0 pointer-events-none">
