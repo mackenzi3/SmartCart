@@ -422,7 +422,7 @@ export default function App() {
                     ref={videoRef} 
                     autoPlay 
                     playsInline 
-                    className={`w-full h-full object-cover ${isScanning ? 'opacity-40' : 'opacity-0'} ${isLowPower ? 'blur-sm' : ''} transition-opacity duration-500`}
+                    className={`w-full h-full object-cover ${isScanning ? 'opacity-100' : 'opacity-0'} ${isLowPower ? 'blur-sm' : ''} transition-opacity duration-500`}
                   ></video>
                   
                   {/* Aesthetic Start Scan Button */}
