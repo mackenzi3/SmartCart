@@ -41,7 +41,8 @@ const productSchema = new mongoose.Schema({
     name: { type: String, required: true },
     price: { type: Number, required: true },
     image: { type: String, default: '' }, // URL to online stock photo
-    icon: { type: String, default: '📦' } // Fallback emoji if image fails
+    icon: { type: String, default: '📦' }, // Fallback emoji if image fails
+    description: { type: String, default: 'No description available.' }
 });
 
 const Product = mongoose.model('Product', productSchema);
@@ -70,9 +71,9 @@ app.get('/api/products/:barcode', async (req, res) => {
     // If not connected to DB, return mock data for demo
     if (mongoose.connection.readyState !== 1) {
         const mockDb = {
-            '123456': { name: 'Fresh Strawberries', price: 2.99, image: 'https://images.unsplash.com/photo-1518635017498-87f514b751ba?w=100&auto=format&fit=crop' },
-            '789012': { name: 'Organic Milk 1L', price: 1.50, image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=100&auto=format&fit=crop' },
-            '345678': { name: 'Dark Chocolate', price: 2.80, image: 'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=100&auto=format&fit=crop' }
+            '123456': { name: 'Fresh Strawberries', price: 2.99, image: 'https://images.unsplash.com/photo-1518635017498-87f514b751ba?w=100&auto=format&fit=crop', description: 'Sweet and juicy fresh strawberries. Perfect for desserts or snacking.' },
+            '789012': { name: 'Organic Milk 1L', price: 1.50, image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=100&auto=format&fit=crop', description: 'Fresh organic whole milk. Rich in calcium and vitamins.' },
+            '345678': { name: 'Dark Chocolate', price: 2.80, image: 'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=100&auto=format&fit=crop', description: 'Premium dark chocolate with 70% cocoa. Rich and intense flavor.' }
         };
         
         if (mockDb[barcode]) {
@@ -150,6 +151,26 @@ app.post('/api/login', async (req, res) => {
         res.json(user);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Endpoint to seed products (Requested by user)
+app.get('/api/seed-products', async (req, res) => {
+    if (mongoose.connection.readyState !== 1) {
+        return res.status(503).json({ message: 'Database not connected' });
+    }
+    try {
+        const dummyProducts = [
+            { barcode: '123456', name: 'Fresh Strawberries', price: 2.99, image: 'https://images.unsplash.com/photo-1518635017498-87f514b751ba?w=400&auto=format&fit=crop', description: 'Sweet and juicy fresh strawberries. Perfect for desserts or snacking.' },
+            { barcode: '789012', name: 'Organic Milk 1L', price: 1.50, image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=100&auto=format&fit=crop', description: 'Fresh organic whole milk. Rich in calcium and vitamins.' },
+            { barcode: '345678', name: 'Dark Chocolate', price: 2.80, image: 'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=400&auto=format&fit=crop', description: 'Premium dark chocolate with 70% cocoa. Rich and intense flavor.' }
+        ];
+        
+        await Product.deleteMany({}); // Clear existing products
+        const products = await Product.insertMany(dummyProducts);
+        res.json({ message: 'Products seeded successfully!', products });
+    } catch (error) {
+        res.status(500).json({ message: 'Error seeding products', error: error.message });
     }
 });
 

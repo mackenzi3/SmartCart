@@ -6,10 +6,11 @@ import CartView from './components/CartView';
 
 export default function App() {
   const [items, setItems] = useState([
-    { id: 1, name: 'Red Apples (1kg)', price: 3.50, image: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?w=100&auto=format&fit=crop' },
-    { id: 2, name: 'Whole Grain Bread', price: 2.50, image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=100&auto=format&fit=crop' },
-    { id: 3, name: 'Avocado (x2)', price: 4.00, image: 'https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=100&auto=format&fit=crop' },
+    { id: 1, name: 'Red Apples (1kg)', price: 3.50, image: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?w=100&auto=format&fit=crop', description: 'Fresh and crispy red apples sourced directly from local farms. Rich in vitamins and perfect for a healthy snack.' },
+    { id: 2, name: 'Whole Grain Bread', price: 2.50, image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=100&auto=format&fit=crop', description: 'Artisanal freshly baked whole grain bread. High in fiber and perfect for a healthy breakfast.' },
+    { id: 3, name: 'Avocado (x2)', price: 4.00, image: 'https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=100&auto=format&fit=crop', description: 'Creamy Hass avocados, ripe and ready to eat. Perfect for salads or making fresh guacamole.' },
   ]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [activeTab, setActiveTab] = useState('scan');
   const videoRef = useRef(null);
   const [scanPulse, setScanPulse] = useState(false);
@@ -540,7 +541,8 @@ export default function App() {
                   {items.map(item => (
                     <div 
                       key={item.id} 
-                      className="glass-card p-3 flex items-center gap-4 transition-all duration-300 animate-[slideIn_0.3s_ease-out]"
+                      className="glass-card p-3 flex items-center gap-4 transition-all duration-300 animate-[slideIn_0.3s_ease-out] cursor-pointer hover:bg-zinc-800/50"
+                      onClick={() => setSelectedProduct(item)}
                     >
                       <div className="w-10 h-10 bg-slate-700/50 rounded-xl flex items-center justify-center overflow-hidden">
                         {item.image ? (
@@ -573,6 +575,54 @@ export default function App() {
         )}
         {/* Bottom Navigation */}
         <NavBar activeTab={activeTab} setActiveTab={setActiveTab} />
+        
+        {/* Product Description Modal */}
+        {selectedProduct && (
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-6 z-50 animate-fadeIn">
+            <div className="bg-zinc-900 border border-zinc-800 rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl">
+              <div className="relative h-48 bg-slate-800">
+                {selectedProduct.image ? (
+                  <img src={selectedProduct.image} alt={selectedProduct.name} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-6xl">
+                    {selectedProduct.icon || '📦'}
+                  </div>
+                )}
+                <button 
+                  onClick={() => setSelectedProduct(null)}
+                  className="absolute top-4 right-4 w-10 h-10 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-black/70 transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+              </div>
+              <div className="p-6 space-y-4">
+                <div>
+                  <h3 className="text-xl font-bold text-white">{selectedProduct.name}</h3>
+                  <span className="text-[#E5B4B2] text-2xl font-extrabold">KSh {selectedProduct.price.toFixed(2)}</span>
+                </div>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  {selectedProduct.description || 'No description available for this product.'}
+                </p>
+                <div className="flex gap-3 pt-2">
+                  <button 
+                    onClick={() => setSelectedProduct(null)}
+                    className="flex-1 bg-zinc-800 text-white font-bold py-3 rounded-2xl hover:bg-zinc-700 transition-colors text-sm"
+                  >
+                    Close
+                  </button>
+                  <button 
+                    onClick={() => {
+                      setSelectedProduct(null);
+                    }}
+                    className="flex-1 bg-gradient-to-r from-[#E5B4B2] to-[#B76E79] text-white font-bold py-3 rounded-2xl hover:scale-105 transition-transform text-sm"
+                  >
+                    OK
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
