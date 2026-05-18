@@ -420,8 +420,16 @@ export default function App() {
                     ref={videoRef} 
                     autoPlay 
                     playsInline 
-                    className={`w-full h-full object-cover opacity-60 ${isLowPower ? 'blur-sm' : ''}`}
+                    className={`w-full h-full object-cover opacity-40 ${isLowPower ? 'blur-sm' : ''}`}
                   ></video>
+                  
+                  {/* Aesthetic Start Scan Button */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <button className="bg-gradient-to-r from-[#E5B4B2] to-[#B76E79] text-white font-extrabold px-6 py-3 rounded-full shadow-lg shadow-[#E5B4B2]/30 hover:scale-105 transition-transform flex items-center gap-2 text-xs uppercase tracking-wider">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                      Start Scan
+                    </button>
+                  </div>
                   
                   {/* Scanner Overlay */}
                   <div className="absolute inset-0 pointer-events-none">
