@@ -162,8 +162,12 @@ export default function App() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-slate-950">
-      <div className="w-full max-w-md h-[100vh] flex flex-col bg-zinc-900 relative shadow-2xl overflow-hidden">
+      <div className="w-full max-w-md h-dynamic flex flex-col bg-zinc-900 relative shadow-2xl overflow-hidden">
         <style>{`
+          .h-dynamic {
+            height: 100vh;
+            height: 100dvh;
+          }
           @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }

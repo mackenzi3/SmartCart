@@ -173,7 +173,7 @@ export default function CartView({ items, total, userData }) {
           </div>
 
           {/* Additional Options */}
-          <div className="space-y-3 pb-20">
+          <div className="space-y-3 pb-24">
             <label className="text-[10px] font-bold text-slate-500 uppercase ml-2">Promotions & Loyalty</label>
             <div className="space-y-2">
               

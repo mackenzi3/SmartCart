@@ -30,7 +30,7 @@ export default function ProfileView({ userData }) {
   };
 
   return (
-    <div className="flex-1 flex flex-col justify-center items-center p-6 bg-zinc-950">
+    <div className="flex-1 flex flex-col justify-center items-center p-6 bg-zinc-950 pb-24">
       {/* Floating Card - Mac/Linux style */}
       <div className={`w-full max-w-sm bg-zinc-900/80 backdrop-blur-2xl border border-zinc-800/50 rounded-[2.5rem] p-8 shadow-2xl shadow-black/70 space-y-6 ${isLoggingOut ? 'animate-logoutAnim border-red-500/50' : ''}`}>
         
