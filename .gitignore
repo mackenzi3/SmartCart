@@ -4,4 +4,4 @@ dist/
 build/
 .DS_Store
 *.local
-# Triggering new build on Vercel
+# Triggering new build on Vercel with correct email v2
